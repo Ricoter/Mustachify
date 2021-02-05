@@ -1,12 +1,16 @@
 from PIL import Image, ImageDraw
 from face_recognition import load_image_file, face_landmarks
 
-def mustachify(img_file):
+def mustachify(img_file, mustache_file="mustache.png"):
+    # load file to img
     img_array = load_image_file(img_file)
+    # get landmarks of all faces
     landmarks = face_landmarks(img_array)
+    # create PIL object for img and drawing
     img = Image.fromarray(img_array)
     draw = ImageDraw.Draw(img)
-    mustache = Image.open("mustache.png")
+    # 
+    mustache = Image.open(mustache_file)
     for face in landmarks:
         xmouth = list(zip(*face["top_lip"]))[0]
         mouthwidth = max(xmouth) - min(xmouth)
