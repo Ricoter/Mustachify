@@ -3,7 +3,7 @@ from io import BytesIO
 from fastapi import FastAPI, UploadFile, File
 from fastapi.responses import HTMLResponse, StreamingResponse
 from fastapi.staticfiles import StaticFiles
-from mustaschify import mustachify
+from mustachify import mustachify
 
 app = FastAPI()
 
