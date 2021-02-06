@@ -1,11 +1,36 @@
-from PIL import Image, ImageDraw
-from face_recognition import load_image_file, face_landmarks
+from PIL import Image, ImageDraw, ImageOps
+from face_recognition import face_landmarks, face_locations
+import numpy as np
 
-def mustachify(img_file, mustache_file="mustache.png"):
+
+def load_image_file(file, mode='RGB'):
+    """
+    Loads an image file (.jpg, .png, etc) into a numpy array
+    :param file: image file name or file object to load
+    :param mode: format to convert the image to. Only 'RGB' (8-bit RGB, 3 channels) and 'L' (black and white) are supported.
+    :return: image contents as numpy array
+    """
+    im = Image.open(file)
+    # handle rotations (https://izziswift.com/pil-thumbnail-is-rotating-my-image/)
+    # https://pillow.readthedocs.io/en/latest/reference/ImageOps.html#PIL.ImageOps.exif_transpose
+    im = ImageOps.exif_transpose(im)
+    im = im.convert(mode)
+    return np.array(im)
+    
+
+def mustachify(file, mustache_file="mustache.png"):
+    """
+    Pastes a mustache on each face in the image file
+
+    :param file: image file name or file object to load
+    :param mustache_file: file pointer to mustache png
+    :return: PIL image object with mustache on each face
+    """
     # load file to img
-    img_array = load_image_file(img_file)
+    img_array = load_image_file(file)
     # get landmarks of all faces
-    landmarks = face_landmarks(img_array)
+    locations = face_locations(img_array, number_of_times_to_upsample=1)
+    landmarks = face_landmarks(img_array, face_locations=None)
     # create PIL object for img and drawing
     img = Image.fromarray(img_array)
     draw = ImageDraw.Draw(img)
