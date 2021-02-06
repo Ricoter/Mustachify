@@ -9,4 +9,5 @@ format:
 	poetry run black .
 sortimports:
 	poetry run isort
-
+runserver:
+	uvicorn main:app --reload
