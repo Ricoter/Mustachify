@@ -19,6 +19,6 @@ def mustachify(img_file, mustache_file="mustache.png"):
         x, y = mustache.size
         ratio = mouthwidth / x * 2
         mask = mustache.resize((int(x*ratio)+1, int(y*ratio)+1))
-        pos = face["nose_tip"][0][0]-int(mask.size[1]/2), face["nose_tip"][0][1] - int(mouthwidth/4)
+        pos = face["nose_tip"][0][0]-int(mouthwidth/1.4), face["nose_tip"][0][1] - int(mouthwidth/4)
         img.paste(mask, pos, mask)
     return img  
