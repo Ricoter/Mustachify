@@ -1,5 +1,4 @@
 document.addEventListener("DOMContentLoaded", () => {
-    console.log("WOW")
     function setPreviewImg(e) {
         const output = document.getElementById("imgpreview")
         output.src = URL.createObjectURL(e.target.files[0]);

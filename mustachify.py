@@ -3,7 +3,7 @@ from face_recognition import face_landmarks, face_locations
 import numpy as np
 
 
-def load_image_file(file, mode='RGB'):
+def load_image_file(file, mode="RGB"):
     """
     Loads an image file (.jpg, .png, etc) into a numpy array
     :param file: image file name or file object to load
@@ -16,7 +16,7 @@ def load_image_file(file, mode='RGB'):
     im = ImageOps.exif_transpose(im)
     im = im.convert(mode)
     return np.array(im)
-    
+
 
 def mustachify(file, mustache_file="mustache.png"):
     """
@@ -43,7 +43,10 @@ def mustachify(file, mustache_file="mustache.png"):
         mouthwidth = max(xmouth) - min(xmouth)
         x, y = mustache.size
         ratio = mouthwidth / x * 2
-        mask = mustache.resize((int(x*ratio)+1, int(y*ratio)+1))
-        pos = face["nose_tip"][0][0]-int(mouthwidth/1.4), face["nose_tip"][0][1] - int(mouthwidth/4)
+        mask = mustache.resize((int(x * ratio) + 1, int(y * ratio) + 1))
+        pos = (
+            face["nose_tip"][0][0] - int(mouthwidth / 1.4),
+            face["nose_tip"][0][1] - int(mouthwidth / 4),
+        )
         img.paste(mask, pos, mask)
-    return img  
+    return img
