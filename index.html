@@ -1,0 +1,129 @@
+<!doctype html>
+
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+
+
+  <title>Mustachify</title>
+
+  <link rel="preconnect" href="https://fonts.gstatic.com">
+    <link rel="icon" type="image/png" href="/static/mustahceglyph.png"/>
+
+  <link href="https://fonts.googleapis.com/css2?family=Lobster&display=swap" rel="stylesheet">
+  <meta name="description" content="The HTML5 Herald">
+  <meta name="author" content="SitePoint">
+
+  <link rel="stylesheet" href="css/styles.css?v=1.0">
+  <style type="text/css">
+    body {
+        width: 100vw;
+        height: 100vh;
+        background-color: cadetblue;
+        position: relative;
+        margin: 0;
+        display: flex;
+        align-items: center;
+        flex-direction: center;
+        justify-content: center;
+    }
+
+    h1 {
+        font-size: 50px;
+    }
+
+    h2 {
+        font-size: 30px
+    }
+
+
+    * {
+    font-family: 'Lobster', cursive;
+    }
+
+    @keyframes rotation {
+    from {
+        transform: rotate(0deg);
+    }
+    to {
+        transform: rotate(359deg);
+    }
+    }
+
+    .container {
+        position: absolute;
+        width: 90%;
+        height: 90%;
+        margin: 50px 50px 50px 50px;
+        padding-bottom: 50px;
+        background-color: whitesmoke;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        border: 3px solid black;
+        border-radius: 3px;
+    }
+
+    .header {
+        display: flex;
+        flex-direction: row;
+        align-items: center;
+    }
+
+    .header > img, .header > h1 {
+        padding: 10px 70px;
+    }
+
+    .header > img {
+        animation: rotation 10s infinite linear;
+        width: 100px;
+        height: 100px;
+    }
+
+    .form-container {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+    }
+
+    .image-preview {
+        width: 50%;
+        max-width: 50%;
+        height: auto;
+        max-height: 100%;
+        margin-top: 30px;
+        display: flex;
+    }
+    
+    .image-preview > img {
+        max-width: 100%;
+        height: auto;
+        max-height: 100%;
+        border-radius: 5px;
+        object-fit: contain;
+    }
+  </style>
+
+</head>
+
+<body>
+  <div class="container">
+    <div class="header">
+        <img src="/static/mustahceglyph.png"/>
+            <h1>Mustachify</h1>
+        <img src="/static/mustahceglyph.png"/>
+    </div>
+    <h2>Simple, machine powered mustachification.</h2>
+    <div class="form-container">
+        <form action="/files/" enctype="multipart/form-data" method="post">
+            <input name="file" type="file" id="imgInp">
+            <button type="submit">Mustachify!</button>
+        </form>
+        <div class="image-preview">
+            <img src="" alt="preview" id="imgpreview">
+        </div>
+    </div>
+  </div>
+  <script src="/static/index.js"></script>
+</body>
+</html>
