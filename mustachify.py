@@ -46,8 +46,15 @@ def face_angle(landmark):
 
 
 def rotate(img, landmark, ref=None):
-    """
-    
+    """[summary] # TODO DocString
+
+    Args:
+        img ([type]): [description]
+        landmark ([type]): [description]
+        ref ([type], optional): [description]. Defaults to None.
+
+    Returns:
+        [type]: [description]
     """
     alpha = -face_angle(landmark)
     alpha = np.rad2deg(alpha)
@@ -62,8 +69,19 @@ def rotate(img, landmark, ref=None):
 
 
 def scale(img, landmark, ref=None, scale=2):
-    """
+    """[summary] # TODO DocString
 
+    Args:
+        img ([type]): [description]
+        landmark ([type]): [description]
+        ref ([type], optional): [description]. Defaults to None.
+        scale (int, optional): [description]. Defaults to 2.
+
+    Raises:
+        ValueError: [description]
+
+    Returns:
+        [type]: [description]
     """
     if len(landmark) == 3:  # model="small"
         lEyeOut = landmark["left_eye"][0]
@@ -85,6 +103,7 @@ def scale(img, landmark, ref=None, scale=2):
 def removePadding(img, ref=None):
     """
     Removes transparent padding of img (and reference img)
+
     :param img: PIL image object to remove padding from
     :param ref: PIL image object that is used for a reference point
     :return: 
@@ -96,7 +115,13 @@ def removePadding(img, ref=None):
         return img.crop(box), ref.crop(box)
 
 
-def mustachify(file, mustache_file="mustache.png", rotation=True, modelsize="small"):
+def mustachify(
+    file, 
+    mustache_file="mustache.png", 
+    rotation=True,
+    perspective=False, # TODO add perspective transformation
+    modelsize="small",
+    ):
     """
     Pastes a mustache on each face in the image file
 
