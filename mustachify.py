@@ -153,7 +153,7 @@ def mustachify(
         elif modelsize=="large":
             nose = landmark["nose_tip"][2]
 
-        midpoint = (round(mask.size[0]/2), round(mask.size[1]/2))
+        midpoint = (round(mask.size[0]/2), round(mask.size[1]/2.8))
         position = (nose[0] - midpoint[0], nose[1] - midpoint[1])
         img.paste(mask, position, mask)
 
