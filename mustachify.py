@@ -129,9 +129,9 @@ def mustachify(
     :param mustache_file: file pointer to mustache png
     :return: PIL image object with mustache on each face
     """
-    if modelsize not in ("small", "large")
+    if modelsize not in ("small", "large"):
         raise ValueError("Landmarks model should be \"small\" or \"large\"")
-    
+
     # load file to img
     img_array = load_image_file(file)
     # get landmarks of all faces
