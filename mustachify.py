@@ -17,6 +17,7 @@ def load_image_file(file, mode="RGB"):
     im = im.convert(mode)
     return np.array(im)
 
+
 def angle(a,b):
     """
     Finds angle in degrees of the line between point a and point b
@@ -58,6 +59,7 @@ def rotate(img, landmark, ref=None):
             img.rotate(alpha, resample=Image.BICUBIC, expand=True), 
             ref.rotate(alpha, resample=Image.BICUBIC, expand=True),
         )
+
 
 def scale(img, landmark, ref=None, scale=2):
     """
