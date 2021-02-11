@@ -17,8 +17,84 @@ def load_image_file(file, mode="RGB"):
     im = im.convert(mode)
     return np.array(im)
 
+def angle(a,b):
+    """
+    Finds angle in degrees of the line between point a and point b
+    """
+    x = b[0]-a[0]
+    y = b[1]-a[1]
+    print(y)
+    return np.arctan(y/x)
 
-def mustachify(file, mustache_file="mustache.png"):
+
+def face_angle(landmark):
+    """
+    Finds the angle of the face based on the outer corners of the eye-landmarks
+
+    :return: angel of face in degrees
+    """
+    if len(landmark) == 3:  # model="small"
+        lEyeOut = landmark["left_eye"][0]
+        rEyeOut = landmark["right_eye"][0]
+    elif len(landmark) == 9: # model="large"
+        lEyeOut = landmark["left_eye"][0]
+        rEyeOut = landmark["right_eye"][3]
+    else:
+        raise ValueError("Landmarks model should be \"small\" or \"large\"")
+    return angle(a=lEyeOut, b=rEyeOut)
+
+
+def rotate(img, landmark, ref=None):
+    """
+    
+    """
+    alpha = -face_angle(landmark)
+    alpha = np.rad2deg(alpha)
+    print(alpha)
+    if ref == None:
+        return img.rotate(alpha, resample=Image.BICUBIC, expand=True) # degrees counter-clockwise
+    else:
+        return (
+            img.rotate(alpha, resample=Image.BICUBIC, expand=True), 
+            ref.rotate(alpha, resample=Image.BICUBIC, expand=True),
+        )
+
+def scale(img, landmark, ref=None, scale=2):
+    """
+
+    """
+    if len(landmark) == 3:  # model="small"
+        lEyeOut = landmark["left_eye"][0]
+        rEyeOut = landmark["right_eye"][0]
+    elif len(landmark) == 9: # model="large"
+        lEyeOut = landmark["left_eye"][0]
+        rEyeOut = landmark["right_eye"][3]
+    else:
+        raise ValueError("Landmarks model should be \"small\" or \"large\"")
+    span = ((lEyeOut[0]-rEyeOut[0])**2 + (lEyeOut[1]-lEyeOut[1])**2)**.5
+    ratio = span / img.size[0] * scale
+    new_size = round(img.size[0]*ratio), round(img.size[1]*ratio)
+    if ref==None:
+        return img.resize(new_size)
+    else:
+        return img.resize(new_size), ref.resize(new_size)
+
+
+def removePadding(img, ref=None):
+    """
+    Removes transparent padding of img (and reference img)
+    :param img: PIL image object to remove padding from
+    :param ref: PIL image object that is used for a reference point
+    :return: 
+    """
+    if ref == None:
+        return img.crop(img.getbbox())
+    else:
+        box = img.getbbox()
+        return img.crop(box), ref.crop(box)
+
+
+def mustachify(file, mustache_file="mustache.png", rotation=True, modelsize="small"):
     """
     Pastes a mustache on each face in the image file
 
@@ -30,23 +106,27 @@ def mustachify(file, mustache_file="mustache.png"):
     img_array = load_image_file(file)
     # get landmarks of all faces
     locations = face_locations(img_array, number_of_times_to_upsample=1)
-    landmarks = face_landmarks(img_array, face_locations=None)
+    landmarks = face_landmarks(img_array, face_locations=None, model=modelsize)
     # create PIL object for img and drawing
     img = Image.fromarray(img_array)
     draw = ImageDraw.Draw(img)
     # load mustache
     mustache = Image.open(mustache_file)
     # loop over each face
-    for face in landmarks:
-        # scale mustache to size of top lip
-        xmouth = list(zip(*face["top_lip"]))[0]
-        mouthwidth = max(xmouth) - min(xmouth)
-        x, y = mustache.size
-        ratio = mouthwidth / x * 2
-        mask = mustache.resize((int(x * ratio) + 1, int(y * ratio) + 1))
-        pos = (
-            face["nose_tip"][0][0] - int(mouthwidth / 1.4),
-            face["nose_tip"][0][1] - int(mouthwidth / 4),
-        )
-        img.paste(mask, pos, mask)
+    for landmark in landmarks:
+        mask = rotate(img=mustache, landmark=landmark)
+        mask = scale(img=mask, landmark=landmark, scale=1.3)
+        mask = removePadding(mask)
+
+        if modelsize=="small":
+            nose = landmark["nose_tip"][0]
+        elif modelsize=="large":
+            nose = landmark["nose_tip"][2]
+        else:
+            raise ValueError("Landmarks model should be \"small\" or \"large\"")
+
+        midpoint = (round(mask.size[0]/2), round(mask.size[1]/2))
+        position = (nose[0] - midpoint[0], nose[1] - midpoint[1])
+        img.paste(mask, position, mask)
+
     return img
