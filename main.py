@@ -1,8 +1,15 @@
+import os
+import sys
+
+if not os.getenv("DEBUG"):
+    sys.path.insert(0, os.path.join(os.path.abspath(os.path.dirname(__file__)), "deps"))
+
 from io import BytesIO
 
-from fastapi import FastAPI, UploadFile, File
+from fastapi import FastAPI, File, UploadFile
 from fastapi.responses import HTMLResponse, StreamingResponse
 from fastapi.staticfiles import StaticFiles
+
 from mustachify import mustachify
 
 app = FastAPI()

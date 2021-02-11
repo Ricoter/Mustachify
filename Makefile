@@ -6,8 +6,8 @@ clean:
 lint:
 	poetry run flake8
 format:
-	poetry run black .
+	poetry run black --force-exclude deps .
 sortimports:
 	poetry run isort
 runserver:
-	uvicorn main:app --reload
+	DEBUG=1 uvicorn main:app --reload

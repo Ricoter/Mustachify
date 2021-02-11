@@ -1,6 +1,6 @@
-from PIL import Image, ImageDraw, ImageOps
-from face_recognition import face_landmarks, face_locations
 import numpy as np
+from face_recognition import face_landmarks, face_locations
+from PIL import Image, ImageDraw, ImageOps
 
 
 def load_image_file(file, mode="RGB"):
