@@ -3,7 +3,7 @@ from os.path import join, dirname, abspath
 import sys
 
 if not os.getenv("DEBUG"):
-    sys.path.insert(0, join(abspath(dirname(dirname(__file__)), "deps")))
+    sys.path.insert(0, join(abspath(dirname(dirname(__file__))), "deps"))
 
 from io import BytesIO
 
