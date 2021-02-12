@@ -15,7 +15,7 @@ from mustachify import mustachify
 
 app = FastAPI()
 
-app.mount("/static", StaticFiles(directory="static"), name="static")
+app.mount("/static", StaticFiles(directory=join(abspath(dirname(__file__)), "static")), name="static")
 
 
 def normalize(ext):
