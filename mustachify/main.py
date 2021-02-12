@@ -1,8 +1,8 @@
-import os
+from os import join, dirname, abspath
 import sys
 
 if not os.getenv("DEBUG"):
-    sys.path.insert(0, os.path.join(os.path.abspath(os.path.dirname(__file__)), "deps"))
+    sys.path.insert(0, join(abspath(dirname(dirname(__file__)), "deps")))
 
 from io import BytesIO
 

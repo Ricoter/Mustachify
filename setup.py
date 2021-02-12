@@ -13,6 +13,6 @@ setuptools.setup(
         "License :: OSI Approved :: MIT License",
         "Operating System :: OS Independent",
     ],
-    packages=["deps", "."],
+    packages=["deps", "mustachify"],
     python_requires=">=3.7",
 )
