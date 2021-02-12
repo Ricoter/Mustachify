@@ -16,5 +16,5 @@ setuptools.setup(
     ],
     packages=find_packages(include=["deps*", "mustachify"]),
     python_requires=">=3.7",
-    package_data={"mustachify/static": "*"},
+    package_data={"mustachify": ["static/*"]},
 )
