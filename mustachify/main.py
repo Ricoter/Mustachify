@@ -1,4 +1,5 @@
-from os import join, dirname, abspath
+import os
+from os.path import join, dirname, abspath
 import sys
 
 if not os.getenv("DEBUG"):
