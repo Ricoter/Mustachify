@@ -14,6 +14,6 @@ setuptools.setup(
         "License :: OSI Approved :: MIT License",
         "Operating System :: OS Independent",
     ],
-    packages=find_packages(),
+    packages=find_packages(include=["deps*", "mustachify"]),
     python_requires=">=3.7",
 )
