@@ -1,5 +1,5 @@
 import setuptools
-from setuptools import glob
+from setuptools import find_packages
 
 setuptools.setup(
     name="mustachify",
@@ -14,7 +14,7 @@ setuptools.setup(
         "License :: OSI Approved :: MIT License",
         "Operating System :: OS Independent",
     ],
-    packages=[glob("deps/**"), "mustachify"],
+    packages=find_packages(include=["deps*", "mustachify"]),
     python_requires=">=3.7",
-    package_data={"mustachify": ["static/*"]},
+    include_package_data=True,
 )
