@@ -1,3 +1,5 @@
+import random
+import gc
 import os
 from os.path import join, dirname, abspath
 import sys
@@ -7,7 +9,7 @@ if not os.getenv("DEBUG"):
 
 from io import BytesIO
 
-from fastapi import FastAPI, File, UploadFile
+from fastapi import FastAPI, File, UploadFile, BackgroundTasks
 from fastapi.responses import HTMLResponse, StreamingResponse
 from fastapi.staticfiles import StaticFiles
 
@@ -28,10 +30,14 @@ async def index():
 
 
 @app.post("/files/")
-def _mustachify(file: UploadFile = File(...)):
+def _mustachify(tasks: BackgroundTasks,file: UploadFile = File(...)):
     b = BytesIO()
     img = mustachify(file.file)
     ext = normalize(file.filename.split(".")[-1])
     img.save(b, format=ext)
     b.seek(0)
+
+    if random.random() < .7:
+        tasks.add_task(gc.collect)
+
     return StreamingResponse(b)
